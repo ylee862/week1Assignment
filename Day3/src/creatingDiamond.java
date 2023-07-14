@@ -10,7 +10,7 @@ public class creatingDiamond {
             }
 
             for (int k=0; k <= size; k++) {
-                
+
             }
 
         }
