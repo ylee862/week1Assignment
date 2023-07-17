@@ -40,15 +40,15 @@ public class OrderSneakersSituation {
         // Customer 의 잔액, DeliveryManager 매상, Staff 매상은 모두 10만원 시작 입니다.
 
         String shoeType = "Nike";
-        boolean isCustomerLikeDelivery = true; // 고객의 배송 주문 선호 여부
+        boolean isCustomerLikeDelivery = false; // 고객의 배송 주문 선호 여부
 
         String nikeSneakersFeature = "편안함"; // 안정감 | 편안함 | 가벼움 등 신발 특징
-        long nikeSneakersPrice = 100_000;
-        boolean havingNikeSneakersInStore = true; // 매장 Nike sneakers 재고 여부
-        boolean buying = false;
+        long nikeSneakersPrice = 90_000;
+        boolean havingNikeSneakersInStore = false; // 매장 Nike sneakers 재고 여부
 
         int daysForDeliver = 3;
         int costForDeliver = 15_000;
+
 
         Customer customer = new Customer();
         customer.setCashAmount(100_000);
@@ -57,29 +57,24 @@ public class OrderSneakersSituation {
         Staff staff = new Staff();
         staff.setSalesAmount(100_000);
 
-        DeliveryManager deliveryManager = new DeliveryManager();
-//        deliveryManager.setSalesAmount(100_000);
 
         //logic start
-
-
         customer.askShoe(shoeType);
 
         staff.respondType(shoeType, nikeSneakersFeature, nikeSneakersPrice, havingNikeSneakersInStore);
 
-        customer.checkCost(customerMoney, nikeSneakersPrice);
-        staff.offerPay(nikeSneakersPrice);
+        customer.checkCost(customerMoney, nikeSneakersPrice, isCustomerLikeDelivery);
 
-//        long cash = customer.amountLeft(nikeSneakersPrice);
-//        customer.response(boolean myFeeling, long cash);
-//        customer.orderShoe(shoeType, isCustomerLikeDelivery);
-//
-//        staff.addAmount(cash);
+        if ((customerMoney >= nikeSneakersPrice) && isCustomerLikeDelivery) {
+            staff.offerPay(nikeSneakersPrice);
+            long cash = customer.amountLeft(nikeSneakersPrice);
 
+            if (!havingNikeSneakersInStore) {
+                staff.deliveryInfo(daysForDeliver, costForDeliver);
+                customer.checkCostDelivery(customerMoney, nikeSneakersPrice, costForDeliver);
+            }
+            customer.shoeWearing(nikeSneakersFeature, cash);
 
-
-
-
-        // TODO: 클래스를 선언하고, 객체간의 협력으로 구현해주세요.
+        }
     }
 }
